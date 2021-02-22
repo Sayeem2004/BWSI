@@ -1,0 +1,68 @@
+Supervised Learning: Gradient Descent
+
+Explanation:
+    Supervised learning is a technique where a models parameters are updated
+    after testing them out against a training set. We use a loss function to
+    represent the total inaccuracy of certain parameters. A loss function
+    that returns a high value means more inaccuracy and so we want to minimize
+    the loss function. One way to minimize the loss function is by taking the
+    derivative of the loss function and changing the parameters using this
+    derivative. A positive derivative means you are heading away from the
+    minimum and a negative derivative means you are heading towards the
+    minimum. So our general equation to update parameters is A_new =
+    A_old - p(stepsize) * d/dx(L). However most parameters and loss functions do not
+    depend on a single variables, it usually on the scale of millions. So we
+    use a technique called gradient descent. This mean calculating the partial
+    derivative of the loss function in terms of each parameter. This returns a
+    vector (or gradient) of changes which we can then subtract from the vector
+    (or gradient) of parameters to change them. The example below is very
+    helpful to understand the topic.
+
+Process:
+    1)  First we are gonna use an example where the loss function is L(x)
+        = 15x^2 + 2. And using this loss function we are going to show
+        that a small step size is usually better than a larger one.
+
+        1)  Create a function that calculates the derivative of a polynomial
+            function
+        2)  Create a function that iterates the updating process a certain
+            amount of times using an arbitrary starting position x, step
+            size step_size, and number of iterations iterations.
+        3)  Run the function with varying step sizes and starting positions
+            and calculate the distance from the x value of the minimum to
+            the x value of the loss. For 15x^2 + 2 the minimum occurs at x=0.
+        4)  We see that with step size 0.1 and 0.4 we are less than 1 from
+            the minimum but with step size 0.6 we end up 86 away from the
+            minimum.
+
+    2)  So we just showed that smaller step sizes are usually better and now
+        we are going to show that gradient descent finds the closest relative
+        minimum and not the absolute minimum of the loss function.
+
+        1)  This time we are using a non-convex function that has 2 minimums.
+            We use the same iteration process as in step 1).
+        2)  We see that we ended up near the the minimum around (1,1) but
+            there is a better minimum at (-0.7,0.4) that out gradient
+            descent wasn't able to reach.
+
+    3)  Now we are going to use a real life example with more than one variable.
+        We are going to do movie box office sales dependent of 4 variables:
+        Production costs, Promotion costs, Book sales, and a Bias. The bias is
+        an arbitrary variable that we include and set at 1 to deal with outliers.
+        Our data is X = shape (N,4), A(parameters) = shape(4,), y = shape(N,).
+        The data appears to be in linear correlation so we are going to use a
+        linear function for our model. Prediction = X[0]*A[0] + X[1]*A[1] ...
+        This can also be written as X * A. Our loss function will be set as
+        average square error so L(x) = 1/N * \sum_1^N{(y - X*A)^2}. The derivative
+        of this can be calculated as ∆L(x) = -2/N * \sum_1^N{(y-X*A)X} using
+        partial derivatives. Note this returns a vector/gradient of values with
+        length 4 so we can update parameters.
+
+        1)  Initialize data with step_size = 0.001, 400 iterations, and randomly
+            generated parameters near 1.
+        2)  Create a function that returns both the current loss and the gradient
+            of changes.
+        3)  For each of the 400 iterations record the loss and change the parameters
+            accordingly
+        4)  Graph the change in parameters and the change in loss to see how
+            successful our gradient descent was and the change to each variable.

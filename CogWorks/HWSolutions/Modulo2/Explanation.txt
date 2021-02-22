@@ -1,0 +1,36 @@
+Semi-Supervised Learning: K-Nearest Neighbors
+
+Explanation:
+    Comparing an image to the images in a training bank with known labels. We
+    take the most common label from the K images that are the closest to the
+    test image and assign that label to the image. We also figure out the best
+    value of K mid program.
+
+Process:
+    1)  We first load in the data to x_train (Training Images), y_train
+        (Training Labels), x_test (Test Images), y_test (Test Labels). We
+        also flatten the pixel data from 32x32x3 to 3072 for convenience.
+
+    2)  We then compute the distance between every image in x_train and
+        every image in x_test. Distance is calculated from differences in
+        pixel values.
+
+    3)  We now have to figure out the best K value. We can't use x_test
+        to figure out the best K value so we use a method called
+        creating folds. We first split the x_train into 5 separate parts
+        and then repeat the following process 5 times.
+
+        1)  We take one of the parts and mark it as a temporary test data
+        2)  We combine the rest of the parts into a temporary training data.
+        3)  We then predict labels with these parts and an arbitrary K. K in
+            [1, 3, 5, 8, 10, 12, 15, 20, 50, 100] (K can be more arbitrary
+            than this)
+        4)  We then compare the predictions and with the actual labels
+            and calculate an accuracy and record it.
+
+    4)  We use the K with the highest accuracy from the experiment above for
+        the test. We calculate the final predictions using this K value
+
+    5)  We then compare the final predictions with y_test and figure out a
+        final accuracy. Final accuracy should be around 30% which isn't good
+        but is much better than 10% with random guessing.

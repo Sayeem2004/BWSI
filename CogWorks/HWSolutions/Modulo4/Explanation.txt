@@ -1,0 +1,49 @@
+Supervised Learning: Back Propagation
+
+Explanation:
+    Back propagation is a technique to calculate derivatives of compositions of
+    functions that would normally be hard to calculate. This technique is heavily
+    used in neural networks because they use many layers of composed functions
+    where each function has a set of parameters. So you need to update each of
+    the parameters in the composed function. This seems difficult but we can use
+    back propagation to do this. Visually here is a function map:
+    Format is point_name(value,derivative_value:dA/dpoint) u = unknown;
+             A(u, u)
+                *
+             /     \
+          B(u,u) C(u,u)
+        +               *
+      /   \          /     \
+    D(3,u)   E(z,u)       F(2,u)
+               +
+            /      \
+        G(x=10,u) H(y=15,u)
+    First solve for all the values: E(z=25,u), B(28,u), C(50,u), A(1400,u)
+    We don't need the derivative of A because that is the end function which
+    doesn't have any parameters to update so we can ignore it
+    Now solve for partial derivatives:
+    B(28,dA/dB) -> B(28,(B*C)/dC) -> B(28,C) -> B(28,50)
+    C(50,dA/dC) -> C(50,(B*C)/dC) -> C(50,B) -> C(50,28)
+    D(3,u) -> D(3,dA/dB * dB/dD) -> D(3,50 * 0) -> D(3,0)
+    F(2,u) -> F(2,dA/dC * dC/dD) -> F(2,26 * 0) -> D(2,0)
+    E(z=25,u) -> E(z=25,dA/dB*dB/dE + dA/dC*dC/dE) -> E(z=25, 50(z+3)/dE + 28(2z)/dE) -> E(z=25, 50 + 56) -> E(z=25, 106)
+    E is a perfect example of back propogation: you are taking the derivative of the point above and multiplying it by current partial derivative.
+    G(x=10,u) -> G(x=10,dA/dE*dE/dG) -> G(x=10,106 * d(x+y)/dx) -> G(x=10,106)
+    H(y=10,u) -> H(y=10,dA/dE*dE/dH) -> G(y=10,106 * d(x+y)/dx) -> G(y=10,106)
+    We now know how to update the parameters z, x, and y because we have their derivative values.
+
+Process:
+    1)  Create a number class, operation class, and add,subtract,multiply,divide,power class
+        exactly like how they do it in the book. (A lot to explain the book does it better)
+
+    2)  We are now going to use the same movie example as in modulo 3. First initialize the
+        data and the parameters as Numbers. Then create a loss function and an iteration
+        function just like in modulo 3. All the operations in these functions are connecting
+        the Numbers allowing us to then perform a back propagation to change the parameters in
+        the iteration function. Now just graph the losses and the parameters after 1000 iterations,
+        like normal.
+
+    3)  This Number class also works for a harder loss function such as absolute error (we can't take
+        the derivative of this easily). It also works for an arbitrary number of parameters even ones
+        made at random. We now test both of these statements by running the iteration 1000 more times
+        and graphing the loss values and the final parameter values. 
